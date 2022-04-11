@@ -1,0 +1,19 @@
+- name: Ensure group "panda" exists
+  ansible.builtin.group:
+    name: panda
+    state: present
+
+- name: Add the user 'panda' with a bash shell, appending the group 'admins' and 'developers' to the user's groups
+  user:
+    name: panda
+    shell: /bin/bash
+    groups: 
+      - panda
+      - sudo
+
+
+- name: Set authorized key in alternate location
+  authorized_key:
+    user: panda
+    state: present
+    key: "{{ lookup('file', '/home/vagrant/.ssh/authorized_keys') }}"
